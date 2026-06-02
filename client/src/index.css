@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* Glass utilities — plain CSS, no @apply needed */
+.glass {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+}
+.dark .glass {
+  background: rgba(14, 14, 34, 0.72);
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.90);
+}
+.dark .glass-card {
+  background: rgba(8, 8, 28, 0.85);
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+.glass-input {
+  background: rgba(255, 255, 255, 0.50);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.70);
+}
+.dark .glass-input {
+  background: rgba(20, 20, 42, 0.90);
+  border-color: rgba(255, 255, 255, 0.10);
+}
+
+.page-bg { background-color: #ECEAF5; }
+.dark .page-bg { background-color: #050510; }
