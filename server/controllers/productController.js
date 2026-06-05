@@ -18,7 +18,19 @@ const getProducts = async (req, res) => {
       if (minPrice) filter.price.$gte = Number(minPrice);
       if (maxPrice) filter.price.$lte = Number(maxPrice);
     }
-
+    if (req.query.deals === 'true') {
+    filter.$expr = {
+      $gte: [
+        {
+          $multiply: [
+            { $divide: [{ $subtract: ['$originalPrice', '$price'] }, '$originalPrice'] },
+            100
+          ]
+        },
+        30
+      ]
+    };
+  }
     let sortOption = {};
     if (sort === 'price_asc') sortOption = { price: 1 };
     else if (sort === 'price_desc') sortOption = { price: -1 };

@@ -5,7 +5,8 @@ import { FiArrowLeft, FiHeart, FiShoppingCart, FiMinus, FiPlus } from 'react-ico
 import toast from 'react-hot-toast';
 import { getProductByIdAPI } from '../api/productAPI';
 import { addToCartAPI } from '../api/cartAPI';
-import { toggleWishlistAPI } from '../api/wishlistAPI';
+import { getWishlistAPI, toggleWishlistAPI } from '../api/wishlistAPI';
+import { getCartAPI } from '../api/cartAPI';
 import { setCart } from '../slices/cartSlice';
 
 export default function ProductDetailPage() {
@@ -13,6 +14,7 @@ export default function ProductDetailPage() {
   const navigate  = useNavigate();
   const dispatch  = useDispatch();
   const { user }  = useSelector(s => s.auth);
+  const { items: cartItems } = useSelector(s => s.cart);
 
   const [product,     setProduct]     = useState(null);
   const [loading,     setLoading]     = useState(true);
@@ -23,6 +25,8 @@ export default function ProductDetailPage() {
   useEffect(() => {
     window.scrollTo(0, 0);
     fetchProduct();
+    fetchWishlistStatus();
+    if (user) fetchCartStatus();
   }, [id]);
 
   const fetchProduct = async () => {
@@ -34,6 +38,24 @@ export default function ProductDetailPage() {
       toast.error('Product not found');
       navigate('/products');
     } finally { setLoading(false); }
+  };
+
+  const fetchWishlistStatus = async () => {
+    if (!user) return;
+    try {
+      const { data } = await getWishlistAPI();
+      const ids = (data.products || []).map(p => p._id?.toString() || p.toString());
+      setInWishlist(ids.includes(id));
+    } catch {
+      // silently ignore — wishlist status is non-critical
+    }
+  };
+
+  const fetchCartStatus = async () => {
+    try {
+      const { data } = await getCartAPI();
+      dispatch(setCart(data));
+    } catch {}
   };
 
   const handleAddToCart = async () => {
@@ -65,7 +87,9 @@ export default function ProductDetailPage() {
   );
 
   if (!product) return null;
-
+  const inCart = cartItems.some(
+    item => (item.product?._id || item.product)?.toString() === id
+  );
   return (
     <div className="page-bg min-h-screen">
       <div className="max-w-7xl mx-auto px-4 py-8">
@@ -112,12 +136,31 @@ export default function ProductDetailPage() {
             </div>
 
             {/* Price */}
-            <p className="text-4xl font-medium text-gray-900 dark:text-white mb-1">
-              ₹{product.price?.toLocaleString('en-IN')}
-            </p>
-            <p className={`text-[12px] mb-5 font-medium ${product.stock > 0 ? 'text-green-500' : 'text-red-500'}`}>
-              {product.stock > 0 ? `✓ In stock (${product.stock} left)` : '✗ Out of stock'}
-            </p>
+            <div className="mb-4">
+              <div className="flex items-baseline gap-3 flex-wrap">
+                <p className="text-4xl font-medium text-gray-900 dark:text-white">
+                  ₹{product.price?.toLocaleString('en-IN')}
+                </p>
+                {product.originalPrice > product.price && (
+                  <>
+                    <p className="text-xl text-gray-400 line-through">
+                      ₹{product.originalPrice?.toLocaleString('en-IN')}
+                    </p>
+                    <span className="bg-green-100 dark:bg-green-900/30
+                                     text-green-600 dark:text-green-400
+                                     text-[13px] font-semibold px-2.5 py-0.5
+                                     rounded-full">
+                      {Math.round((1 - product.price / product.originalPrice) * 100)}% off
+                    </span>
+                  </>
+                )}
+              </div>
+              {product.originalPrice > product.price && (
+                <p className="text-[12px] text-green-500 mt-1 font-medium">
+                  You save ₹{(product.originalPrice - product.price)?.toLocaleString('en-IN')}
+                </p>
+              )}
+            </div>
 
             {/* Description */}
             <p className="text-[14px] text-gray-500 dark:text-gray-400
@@ -151,25 +194,38 @@ export default function ProductDetailPage() {
 
             {/* Actions */}
             <div className="flex gap-3">
-              <button onClick={handleAddToCart}
-                disabled={product.stock === 0 || addingCart}
-                className="flex-1 py-3 bg-primary text-white rounded-xl text-[14px]
-                           font-medium hover:opacity-90 transition-opacity
-                           flex items-center justify-center gap-2
-                           disabled:opacity-50 disabled:cursor-not-allowed">
-                {addingCart
-                  ? <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  : <><FiShoppingCart size={16} /> Add to Cart</>}
-              </button>
+              {inCart ? (
+                <button onClick={() => navigate('/cart')}
+                  className="flex-1 py-3 bg-green-500 text-white rounded-xl text-[14px]
+                             font-medium hover:bg-green-600 transition-colors
+                             flex items-center justify-center gap-2">
+                  <FiShoppingCart size={16} />
+                  Go to Cart →
+                </button>
+              ) : (
+                <button onClick={handleAddToCart}
+                  disabled={product.stock === 0 || addingCart}
+                  className="flex-1 py-3 bg-primary text-white rounded-xl text-[14px]
+                             font-medium hover:opacity-90 transition-opacity
+                             flex items-center justify-center gap-2
+                             disabled:opacity-50 disabled:cursor-not-allowed">
+                  {addingCart
+                    ? <span className="w-4 h-4 border-2 border-white
+                                        border-t-transparent rounded-full animate-spin" />
+                    : <><FiShoppingCart size={16} /> Add to Cart</>}
+                </button>
+              )}
+            
               <button onClick={handleWishlist}
                 className={`w-12 h-12 rounded-xl border flex items-center justify-center
                             transition-all duration-200
-                  ${inWishlist
-                    ? 'bg-red-50 dark:bg-red-900/20 border-red-300 dark:border-red-800 text-red-500'
-                    : 'border-gray-200 dark:border-white/[0.08] text-gray-400 hover:text-red-500 hover:border-red-300'}`}>
+                ${inWishlist
+                  ? 'bg-red-50 dark:bg-red-900/20 border-red-300 dark:border-red-800 text-red-500'
+                  : 'border-gray-200 dark:border-white/[0.08] text-gray-400 hover:text-red-500 hover:border-red-300'}`}>
                 <FiHeart size={18} fill={inWishlist ? 'currentColor' : 'none'} />
               </button>
             </div>
+
 
             {/* Meta */}
             <div className="mt-6 pt-5 border-t border-gray-100 dark:border-white/[0.06]

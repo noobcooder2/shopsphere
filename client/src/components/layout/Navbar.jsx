@@ -92,10 +92,12 @@ export default function Navbar() {
                        transition-all duration-150">
             <FiShoppingCart size={15} />
             {itemCount > 0 && (
-              <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white
-                               text-[9px] w-4 h-4 rounded-full flex items-center
-                               justify-content font-medium">
-                {itemCount > 9 ? '9+' : itemCount}
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white
+                               text-[9px] min-w-[18px] h-[18px] px-1 rounded-full
+                               flex items-center justify-center font-semibold
+                               border-2 border-white dark:border-[#0E0E22]
+                               leading-none z-10">
+                {itemCount > 99 ? '99+' : itemCount}
               </span>
             )}
           </button>
