@@ -45,3 +45,20 @@
 
 .page-bg { background-color: #ECEAF5; }
 .dark .page-bg { background-color: #050510; }
+
+.label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--tw-text-opacity, 1);
+  display: block;
+  margin-bottom: 5px;
+  @apply text-gray-500 dark:text-gray-400;
+}
+.field-input {
+  @apply w-full px-3 py-2.5 rounded-xl text-[13px]
+         bg-gray-50 dark:bg-[#14142A]
+         border border-gray-200 dark:border-white/[0.08]
+         text-gray-800 dark:text-gray-200
+         placeholder-gray-400 outline-none
+         focus:border-primary transition-colors;
+}

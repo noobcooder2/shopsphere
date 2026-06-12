@@ -19,16 +19,7 @@ export default function DealsPage() {
   useEffect(() => {
     getProductsAPI({ deals: 'true' })
       .then(({ data }) => {
-        // One product per category — the one with highest discount
-        const byCategory = {};
-        data.forEach(p => {
-          const disc = Math.round((1 - p.price / p.originalPrice) * 100);
-          if (!byCategory[p.category] ||
-              disc > Math.round((1 - byCategory[p.category].price / byCategory[p.category].originalPrice) * 100)) {
-            byCategory[p.category] = p;
-          }
-        });
-        setDeals(Object.values(byCategory));
+        setDeals(data);
       })
       .catch(() => toast.error('Failed to load deals'))
       .finally(() => setLoading(false));
@@ -65,7 +56,7 @@ export default function DealsPage() {
           </h1>
         </div>
         <p className="text-[13px] text-gray-500 dark:text-gray-400 mb-3">
-          {loading ? 'Loading...' : `${deals.length} deals — one from each category`}
+          {loading ? 'Loading...' : `${deals.length} deals available`}
         </p>
 
         {/* Discount threshold badge */}

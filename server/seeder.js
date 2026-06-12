@@ -5,11 +5,11 @@ const Product = require('./models/Product');
 const products = [
   // ── Electronics (MacBook, iPhone 16, Samsung S25 = small discounts | Sony = 30%+ deal)
   {
-    name: 'MacBook Air M3',
-    description: 'Apple MacBook Air with M3 chip, 13.6-inch Liquid Retina display, 8GB RAM, 256GB SSD. 18-hour battery life.',
-    price: 114999, originalPrice: 124999,
+    name: 'MacBook Air M5',
+    description: 'Apple MacBook Air with M5 chip, 13.6-inch Liquid Retina display, 16GB RAM, 512GB SSD. 18-hour battery life.',
+    price: 110290, originalPrice: 119900,
     category: 'Electronics', brand: 'Apple', stock: 25,
-    images: ['https://placehold.co/400x400/111827/white?text=MacBook+Air+M3'],
+    images: ['https://placehold.co/400x400/111827/white?text=MacBook+Air+M5'],
   },
   {
     name: 'iPhone 16 Pro',
@@ -30,7 +30,7 @@ const products = [
     description: 'Industry-leading noise cancelling wireless headphones. 30-hour battery, multipoint connection, crystal clear calls.',
     price: 24500, originalPrice: 34999,   // 30% off — DEAL
     category: 'Electronics', brand: 'Sony', stock: 35,
-    images: ['https://placehold.co/400x400/1F2937/white?text=Sony+WH-1000XM5'],
+    images: ['https://rukminim1.flixcart.com/image/1490/1490/xif0q/headphone/d/5/v/-original-imahgr29e7fzcfgn.jpeg?q=90'],
   },
 
   // ── Fashion (Nike = 30%+ deal | others small discount)
@@ -44,14 +44,14 @@ const products = [
   {
     name: "Levi's 501 Original Jeans",
     description: 'The original straight fit jean in classic stonewash blue since 1873. A true wardrobe essential.',
-    price: 3999, originalPrice: 4999,
+    price: 3499, originalPrice: 4999,
     category: 'Fashion', brand: "Levi's", stock: 80,
     images: ['https://placehold.co/400x400/1D4ED8/white?text=Levis+501'],
   },
   {
     name: 'Zara Floral Midi Dress',
     description: 'Elegant floral print midi dress with V-neckline, perfect for casual and semi-formal occasions.',
-    price: 3499, originalPrice: 4500,
+    price: 2999, originalPrice: 4500,
     category: 'Fashion', brand: 'Zara', stock: 60,
     images: ['https://placehold.co/400x400/EC4899/white?text=Zara+Dress'],
   },
@@ -74,7 +74,7 @@ const products = [
   {
     name: 'Prestige Induction Cooktop',
     description: '1600W induction cooktop with 7 power levels, auto-off safety and feather touch controls.',
-    price: 3999, originalPrice: 4999,
+    price: 3499, originalPrice: 4999,
     category: 'Home', brand: 'Prestige', stock: 45,
     images: ['https://placehold.co/400x400/6B7280/white?text=Induction+Cooktop'],
   },
@@ -106,14 +106,14 @@ const products = [
   {
     name: 'Atomic Habits',
     description: 'An Easy and Proven Way to Build Good Habits and Break Bad Ones. #1 New York Times bestseller.',
-    price: 560, originalPrice: 799,       // 30% off — DEAL
+    price: 549, originalPrice: 799,       // 30% off — DEAL
     category: 'Books', brand: 'Penguin', stock: 200,
     images: ['https://placehold.co/400x400/0EA5E9/white?text=Atomic+Habits'],
   },
   {
     name: 'Rich Dad Poor Dad',
     description: "What the Rich Teach Their Kids About Money That the Poor and Middle Class Do Not.",
-    price: 499, originalPrice: 599,
+    price: 399, originalPrice: 599,
     category: 'Books', brand: 'Simon & Schuster', stock: 150,
     images: ['https://placehold.co/400x400/DC2626/white?text=Rich+Dad'],
   },
