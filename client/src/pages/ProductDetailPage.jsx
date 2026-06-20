@@ -104,12 +104,17 @@ export default function ProductDetailPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
 
           {/* Image */}
-          <div className="bg-white dark:bg-[#0E0E22] rounded-3xl
+          <div className="bg-gray-50 dark:bg-[#14142A] rounded-3xl
                           border border-gray-100 dark:border-white/[0.06]
-                          h-80 md:h-[420px] flex items-center justify-center overflow-hidden">
+                          h-80 md:h-[420px] flex items-center justify-center
+                          overflow-hidden p-8">
             {product.images?.[0]
               ? <img src={product.images[0]} alt={product.name}
-                  className="w-full h-full object-cover" />
+                  onError={e => {
+                    e.target.src = `https://placehold.co/400x400/6366F1/white?text=${encodeURIComponent(product.name)}`;
+                  }}
+                  className="w-full h-full object-contain
+                             drop-shadow-xl" />
               : <span className="text-9xl">🛍️</span>}
           </div>
 

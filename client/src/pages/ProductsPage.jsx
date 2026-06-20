@@ -190,8 +190,7 @@ export default function ProductsPage() {
                                     flex items-center justify-center overflow-hidden">
                       {p.images?.[0]
                         ? <img src={p.images[0]} alt={p.name}
-                            className="w-full h-full object-cover
-                                       group-hover:scale-105 transition-transform duration-300" />
+                            className="w-full h-full object-contain p-3" />
                         : <span className="text-5xl group-hover:scale-110
                                            transition-transform duration-300">🛍️</span>
                       }
